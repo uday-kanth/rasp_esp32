@@ -15,6 +15,7 @@ net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
 net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA_FP16)
 model = cv2.dnn_DetectionModel(net)
 model.setInputParams(size=(416, 416), scale=1/255, swapRB=True)
+ws = create_connection("wss://gtg3p8yh66.execute-api.us-east-1.amazonaws.com/production/")
 
 key = cv2. waitKey(1)
 webcam = cv2.VideoCapture(0)
@@ -52,6 +53,17 @@ while True:
         
                 res.append(label)
             print(res)
+            mess= {
+                    "action": "sendMessage",
+                    "message": res[0][0]
+                    }
+            mess= json.dumps(mess)
+            ws.send(mess)   
+            print("Sent")
+            print("Receiving...")
+            result =  ws.recv()
+            print("Received '%s'" % result)
+            ws.close() 
 
             break
         elif key == ord('q'):
