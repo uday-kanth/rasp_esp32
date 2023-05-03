@@ -55,7 +55,7 @@ while True:
             print(res)
             mess= {
                     "action": "sendMessage",
-                    "message": res[0][0]
+                    "message": res[0]
                     }
             mess= json.dumps(mess)
             ws.send(mess)   
